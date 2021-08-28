@@ -20,3 +20,7 @@ Game mechanics:
     - City polices
     - Citizens propose polices
     - Typical game settings such as volume, resolution, etc. 
+    - Music and Sound effects
+
+Game Assets:
+    - Kenny Game Assets 1, 2, 3
