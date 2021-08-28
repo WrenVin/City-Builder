@@ -12,6 +12,7 @@ Game objectives:
 
 Game mechanics:
     - Fully functioning city editor
+    - Zoning with automatic construction of buildings
     - Fully functioning city economy
     - Fully functioning citizen happiness, tourism, pollution, and traffic systems
     - Ability to start multiple saves
