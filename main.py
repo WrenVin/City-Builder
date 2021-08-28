@@ -17,6 +17,7 @@ class Game:
         pg.display.set_caption(TITLE)
         self.clock = pg.time.Clock()
         self.font_name = pg.font.match_font(FONT_NAME)
+        self.dragging = False
         #self.gamemap = 'img/FirstMap.tmx'
         #self.attack = False
         #pg.mouse.set_visible(False)
@@ -27,6 +28,7 @@ class Game:
         game_folder = path.dirname(__file__)
         img_folder = path.join(game_folder, 'img')
         snd_folder = path.join(game_folder, 'snd')
+        self.redposx, self.redposy = self.screen.get_width()/2, self.screen.get_height()-40
         #self.worldspritesheet = SpriteSheet(path.join(img_folder, SPRITESHEETWORLD))
         
     def new(self):
@@ -51,7 +53,11 @@ class Game:
         #self.player.update()
         #self.camera.update(self.player)
         self.screen.fill(GREEN)
-        self.redRect = pg.draw.rect(self.screen, RED, pg.Rect(self.screen.get_width()/2, self.screen.get_height()/3, 30, 40))
+        self.bluebar = pg.draw.rect(self.screen, BLACK, pg.Rect(0, self.screen.get_height()*(4.7/5), self.screen.get_width(), self.screen.get_height()*0.3/5))
+        if self.dragging:
+            self.redposx, self.redposy = pg.mouse.get_pos()
+        self.redRectCopy = pg.draw.rect(self.screen, RED, pg.Rect(self.redposx, self.redposy, 30, 40))
+        self.redRect = pg.draw.rect(self.screen, RED, pg.Rect(self.screen.get_width()/2, self.screen.get_height()-40, 30, 40))
         #self.draw_text("City Builder", 30, WHITE, self.screen.get_width()/2, self.screen.get_height()/3)
         #self.draw_text("By Vincent Wren", 20, WHITE, self.screen.get_width()/2, self.screen.get_height()/2)
     
@@ -68,9 +74,11 @@ class Game:
             elif event.type == pg.VIDEORESIZE:
                 self.screen = pg.display.set_mode((event.w, event.h),
                                         pg.RESIZABLE)
-            elif event.type == pg.MOUSEBUTTONUP:
+            elif event.type == pg.MOUSEBUTTONDOWN:
                 if self.redRect.collidepoint(pg.mouse.get_pos()):
-                    print(9)
+                    self.dragging = True
+            elif event.type == pg.MOUSEBUTTONUP:
+                self.dragging = False
         
     def draw_text(self, text, size, color, x, y):
         font = pg.font.Font(self.font_name, size)
