@@ -20,6 +20,7 @@ class Game:
         self.redposx, self.redposy = self.screen.get_width()/2, self.screen.get_height()-40
         self.dragging = False
         self.squares = []
+        self.rotate = False
         #self.squares.append(pg.Rect(self.screen.get_width()/2, self.screen.get_height()-40, 30, 40))
         
 
@@ -50,8 +51,11 @@ class Game:
         self.bluebar = pg.draw.rect(self.screen, BLACK, pg.Rect(0, self.screen.get_height()*(4.7/5), self.screen.get_width(), self.screen.get_height()*0.3/5))
         if self.dragging:
             self.redposx, self.redposy = pg.mouse.get_pos()
-        pg.draw.rect(self.screen, RED, pg.Rect(self.redposx, self.redposy, 30, 40))
-        self.redRect = pg.draw.rect(self.screen, RED, pg.Rect(self.screen.get_width()/2, self.screen.get_height()-40, 30, 40))
+            if self.rotate:
+                pg.draw.rect(self.screen, RED, pg.Rect(self.redposx, self.redposy, SQUARE_Y, SQUARE_X))
+            else:
+                pg.draw.rect(self.screen, RED, pg.Rect(self.redposx, self.redposy, SQUARE_X, SQUARE_Y))
+        self.redRect = pg.draw.rect(self.screen, RED, pg.Rect(self.screen.get_width()/2, self.screen.get_height()-40, SQUARE_X, SQUARE_Y))
         if len(self.squares) != 0:
             for square in self.squares:
                 pg.draw.rect(self.screen, RED, square)
@@ -76,12 +80,22 @@ class Game:
                 x = self.redposx
                 y = self.redposy
                 print(len(self.squares))
-                
                 if self.dragging:
-                    self.squares.append(pg.Rect(x, y, 30, 40))
+                        if self.rotate:
+                            if y < self.screen.get_height()*4.7/5-SQUARE_X:
+                                self.squares.append(pg.Rect(self.redposx, self.redposy, SQUARE_Y, SQUARE_X))
+                        else:
+                            if y < self.screen.get_height()*4.7/5-SQUARE_Y:
+                                self.squares.append(pg.Rect(self.redposx, self.redposy, SQUARE_X, SQUARE_Y))
                 print(self.squares)
                 self.dragging = False
-        
+                self.rotate = False
+            self.keys = pg.key.get_pressed()
+            if self.keys[pg.K_r] and not self.keys[pg.K_LSHIFT]:
+                self.rotate = True
+            elif self.keys[pg.K_LSHIFT]:
+                if self.keys[pg.K_r]:
+                    self.rotate = False
     def draw_text(self, text, size, color, x, y):
         font = pg.font.Font(self.font_name, size)
         text_surface = font.render(text, True, color)

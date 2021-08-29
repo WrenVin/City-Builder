@@ -19,3 +19,5 @@ TITLE = "City Builder"
 
 FONT_NAME = 'arial'
 ORANGE = (255,165,0)
+
+SQUARE_X, SQUARE_Y = 30, 40
