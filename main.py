@@ -48,17 +48,18 @@ class Game:
 
     def update(self):
         self.screen.fill(GREEN)
-        self.bluebar = pg.draw.rect(self.screen, BLACK, pg.Rect(0, self.screen.get_height()*(4.7/5), self.screen.get_width(), self.screen.get_height()*0.3/5))
+        self.blackbar = pg.draw.rect(self.screen, BLACK, pg.Rect(0, self.screen.get_height()*(4.7/5), self.screen.get_width(), self.screen.get_height()*0.3/5))
         if self.dragging:
             self.redposx, self.redposy = pg.mouse.get_pos()
             if self.rotate:
-                pg.draw.rect(self.screen, RED, pg.Rect(self.redposx, self.redposy, SQUARE_Y, SQUARE_X))
+                pg.draw.rect(self.screen, self.color, pg.Rect(self.redposx, self.redposy, SQUARE_Y, SQUARE_X))
             else:
-                pg.draw.rect(self.screen, RED, pg.Rect(self.redposx, self.redposy, SQUARE_X, SQUARE_Y))
+                pg.draw.rect(self.screen, self.color, pg.Rect(self.redposx, self.redposy, SQUARE_X, SQUARE_Y))
         self.redRect = pg.draw.rect(self.screen, RED, pg.Rect(self.screen.get_width()/2, self.screen.get_height()-40, SQUARE_X, SQUARE_Y))
+        self.blueRect = pg.draw.rect(self.screen, BLUE, pg.Rect(self.screen.get_width()/2+ 100, self.screen.get_height()-40, SQUARE_X, SQUARE_Y))
         if len(self.squares) != 0:
             for square in self.squares:
-                pg.draw.rect(self.screen, RED, square)
+                pg.draw.rect(self.screen, self.color, square)
         
     def draw(self):
         #for sprite in self.all_sprites:
@@ -77,6 +78,10 @@ class Game:
                 if pg.mouse.get_pressed()[0]:
                     if self.redRect.collidepoint(pg.mouse.get_pos()):
                         self.dragging = True
+                        self.color = RED
+                    elif self.blueRect.collidepoint(pg.mouse.get_pos()):
+                        self.dragging = True
+                        self.color = BLUE
             elif event.type == pg.MOUSEBUTTONUP:
                 x = self.redposx
                 y = self.redposy
