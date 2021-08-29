@@ -74,8 +74,9 @@ class Game:
                 self.screen = pg.display.set_mode((event.w, event.h),
                                         pg.RESIZABLE)
             elif event.type == pg.MOUSEBUTTONDOWN:
-                if self.redRect.collidepoint(pg.mouse.get_pos()):
-                    self.dragging = True
+                if pg.mouse.get_pressed()[0]:
+                    if self.redRect.collidepoint(pg.mouse.get_pos()):
+                        self.dragging = True
             elif event.type == pg.MOUSEBUTTONUP:
                 x = self.redposx
                 y = self.redposy
