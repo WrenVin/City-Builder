@@ -17,10 +17,10 @@ class Game:
         pg.display.set_caption(TITLE)
         self.clock = pg.time.Clock()
         self.font_name = pg.font.match_font(FONT_NAME)
+        self.redposx, self.redposy = self.screen.get_width()/2, self.screen.get_height()-40
         self.dragging = False
-        #self.gamemap = 'img/FirstMap.tmx'
-        #self.attack = False
-        #pg.mouse.set_visible(False)
+        self.squares = []
+        #self.squares.append(pg.Rect(self.screen.get_width()/2, self.screen.get_height()-40, 30, 40))
         
 
 
@@ -28,14 +28,10 @@ class Game:
         game_folder = path.dirname(__file__)
         img_folder = path.join(game_folder, 'img')
         snd_folder = path.join(game_folder, 'snd')
-        self.redposx, self.redposy = self.screen.get_width()/2, self.screen.get_height()-40
-        #self.worldspritesheet = SpriteSheet(path.join(img_folder, SPRITESHEETWORLD))
         
     def new(self):
-        self.load_data()
-        #self.cursor = pg.transform.rotate(self.sword, 135)
         self.all_sprites = pg.sprite.Group()
-        #self.camera = Camera(self.map.width, self.map.height)
+        self.load_data()
         
     def run(self):
         self.playing = True
@@ -50,17 +46,16 @@ class Game:
         exit()
 
     def update(self):
-        #self.player.update()
-        #self.camera.update(self.player)
         self.screen.fill(GREEN)
         self.bluebar = pg.draw.rect(self.screen, BLACK, pg.Rect(0, self.screen.get_height()*(4.7/5), self.screen.get_width(), self.screen.get_height()*0.3/5))
         if self.dragging:
             self.redposx, self.redposy = pg.mouse.get_pos()
-        self.redRectCopy = pg.draw.rect(self.screen, RED, pg.Rect(self.redposx, self.redposy, 30, 40))
+        pg.draw.rect(self.screen, RED, pg.Rect(self.redposx, self.redposy, 30, 40))
         self.redRect = pg.draw.rect(self.screen, RED, pg.Rect(self.screen.get_width()/2, self.screen.get_height()-40, 30, 40))
-        #self.draw_text("City Builder", 30, WHITE, self.screen.get_width()/2, self.screen.get_height()/3)
-        #self.draw_text("By Vincent Wren", 20, WHITE, self.screen.get_width()/2, self.screen.get_height()/2)
-    
+        if len(self.squares) != 0:
+            for square in self.squares:
+                pg.draw.rect(self.screen, RED, square)
+        
     def draw(self):
         #for sprite in self.all_sprites:
             #self.screen.blit(sprite.image, self.camera.apply(sprite))
@@ -78,6 +73,13 @@ class Game:
                 if self.redRect.collidepoint(pg.mouse.get_pos()):
                     self.dragging = True
             elif event.type == pg.MOUSEBUTTONUP:
+                x = self.redposx
+                y = self.redposy
+                print(len(self.squares))
+                
+                if self.dragging:
+                    self.squares.append(pg.Rect(x, y, 30, 40))
+                print(self.squares)
                 self.dragging = False
         
     def draw_text(self, text, size, color, x, y):
@@ -89,11 +91,8 @@ class Game:
 
     def show_start_screen(self):
         pass
-        #pg.display.update()
-        #self.wait_for_key()
         
     def wait_for_key(self):
-        #self.gamemap = 'FirstMap.tmx'
         waiting = False
         while waiting:
             keys = pg.key.get_pressed()

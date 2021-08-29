@@ -14,7 +14,7 @@ ORANGE = (255,165,0)
 #SPRITESHEETWORLD = 'Overworld.png'
 WIDTH = 1600   # 16 * 64 or 32 * 32 or 64 * 16
 HEIGHT = 900  # 16 * 48 or 32 * 24 or 64 * 12
-FPS = 144
+FPS = 60
 TITLE = "City Builder"
 
 FONT_NAME = 'arial'
